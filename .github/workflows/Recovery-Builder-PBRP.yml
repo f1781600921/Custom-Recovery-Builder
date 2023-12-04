@@ -55,10 +55,6 @@ on:
         - boot
         - recovery
         - vendorboot
-      FILE_TO_CHECK:
-        description: 'Specify which libs to check' # Use it know what kind of dependencies your missing for decryption.
-        required: true
-        default: 'system/bin/qseecomd'
 
 permissions:
   contents: write
@@ -67,7 +63,22 @@ jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
     runs-on: ubuntu-20.04
+    permissions:
+      contents: write
     steps:
+    - name: Display Run Parameters
+      run: |
+        echo "::group::User Environment Variables"
+        echo "Manifest URL: ${{ github.event.inputs.MANIFEST_URL }}"
+        echo "Manifest Branch: ${{ github.event.inputs.MANIFEST_BRANCH }}"
+        echo "Device Tree URL: ${{ github.event.inputs.DEVICE_TREE_URL }}"
+        echo "Device Tree Branch: ${{ github.event.inputs.DEVICE_TREE_BRANCH }}"
+        echo "Device Path: ${{ github.event.inputs.DEVICE_PATH }}"
+        echo "Device Name: ${{ github.event.inputs.DEVICE_NAME }}"
+        echo "Makefile Name: ${{ github.event.inputs.MAKEFILE_NAME }}"
+        echo "Build Target: ${{ github.event.inputs.BUILD_TARGET }}.img"
+        echo "::endgroup::"
+        
     - name: Check Out
       uses: actions/checkout@v2.5.0
 
